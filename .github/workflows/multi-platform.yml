@@ -1,0 +1,54 @@
+name: 03 - Multi-Platform Testing
+
+# Trigger on pull requests to the main branch 
+on:
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  # Job 1: Ubuntu
+  ubuntu-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Print OS Info (Linux)
+        run: |
+          echo "Running on Ubuntu"
+          uname -a
+      - name: Create and read file (Linux)
+        run: |
+          echo "Hello from Ubuntu" > testfile.txt
+          cat testfile.txt
+
+  # Job 2: Windows
+  windows-job:
+    runs-on: windows-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Print OS Info (Windows)
+        shell: pwsh
+        run: |
+          echo "Running on Windows"
+          systeminfo | findstr /B /C:"OS Name" /C:"OS Version"
+      - name: Create and read file (Windows)
+        shell: pwsh
+        run: |
+          Set-Content -Path "testfile.txt" -Value "Hello from Windows"
+          Get-Content -Path "testfile.txt"
+
+  # Job 3: macOS
+  macos-job:
+    runs-on: macos-latest
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+      - name: Print OS Info (macOS)
+        run: |
+          echo "Running on macOS"
+          uname -a
+      - name: Create and read file (macOS)
+        run: |
+          echo "Hello from macOS" > testfile.txt
+          cat testfile.txt
